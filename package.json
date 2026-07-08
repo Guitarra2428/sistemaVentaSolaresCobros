@@ -1,0 +1,36 @@
+{
+  "name": "sistema-venta-solares-cobros",
+  "version": "1.0.0",
+  "description": "Sistema full stack para administracion de venta de solares y gestion de cobros.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "check": "node --check server.js",
+    "db:migrate": "node scripts/migrate.js",
+    "db:seed": "node scripts/seed.js",
+    "db:reset": "node scripts/reset.js",
+    "db:setup": "npm run db:reset && npm run db:migrate && npm run db:seed",
+    "smoke": "node scripts/smoke.js"
+  },
+  "keywords": [
+    "solares",
+    "cobros",
+    "contratos",
+    "ventas"
+  ],
+  "author": "",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.13.1",
+    "pino": "^9.5.0",
+    "pino-pretty": "^11.3.0",
+    "zod": "^3.23.8"
+  }
+}

@@ -1,0 +1,44 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: solares-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-venta_solares}
+      POSTGRES_USER: ${POSTGRES_USER:-solares}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-solares123}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "${DB_HOST_PORT:-5433}:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER:-solares}", "-d", "${POSTGRES_DB:-venta_solares}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  app:
+    build: .
+    container_name: solares-app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 3020
+      DATABASE_URL: postgres://${POSTGRES_USER:-solares}:${POSTGRES_PASSWORD:-solares123}@db:5432/${POSTGRES_DB:-venta_solares}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET obligatorio en producción}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-8h}
+      BCRYPT_ROUNDS: ${BCRYPT_ROUNDS:-10}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      CORS_ORIGINS: ${CORS_ORIGINS:-}
+      LATE_FEE_JOB_TIME: ${LATE_FEE_JOB_TIME:-02:00}
+    ports:
+      - "${APP_HOST_PORT:-3020}:3020"
+    volumes:
+      - ./backups:/app/backups
+
+volumes:
+  db-data:
+    driver: local

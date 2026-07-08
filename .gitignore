@@ -1,0 +1,34 @@
+node_modules/
+.env
+.env.local
+.env.*.local
+
+# Datos sensibles y locales
+data/
+backups/
+
+# Logs
+*.log
+logs/
+
+# Metadata de editores y herramientas
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.claude/
+.agents/
+.aider*
+.cursor/
+CLAUDE.md
+memory/
+
+# Build outputs
+coverage/
+dist/
+build/
+
+# Sistema
+*.swp
+*.swo
+*~
